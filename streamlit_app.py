@@ -2,6 +2,7 @@ import os
 import json
 import re
 import sqlite3
+import zipfile
 
 import pandas as pd
 import streamlit as st
@@ -9,6 +10,9 @@ from google import genai
 from google.genai import types
 
 DB_FILE = "pcards.db"
+if not os.path.exists(DB_FILE):
+    with zipfile.ZipFile("pcards.zip", "r") as archive:
+        archive.extract("pcards.db")
 OSU_AGENCY_NUMBER = 1000
 
 st.set_page_config(page_title="OSU P-Card Audit", layout="wide")
