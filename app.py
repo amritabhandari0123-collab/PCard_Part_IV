@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import sqlite3
+from google import genai
 
 app = Flask(__name__)
 
@@ -32,21 +33,21 @@ def questions():
     question_lower = question.lower()
     if question and "how many" in question_lower and "transaction" in question_lower:
         if "2014" in question_lower:
-            cursor.execute("SELECT COUNT(*) FROM pcards WHERE Year = 2014")
+            cursor.execute("SELECT COUNT(*) FROM pcards WHERE AgencyNumber = 1000 AND Year = 2014")    
         else:
-            cursor.execute("SELECT COUNT(*) FROM pcards")
+            cursor.execute("SELECT COUNT(*) FROM pcards WHERE AgencyNumber = 1000")
         total = cursor.fetchone()[0]
         answer = "There are " + str(total) + " transactions in the database."
     elif question and "total" in question_lower and "amount" in question_lower:
-        cursor.execute("SELECT SUM(Amount) FROM pcards")
+        cursor.execute("SELECT SUM(Amount) FROM pcards WHERE AgencyNumber = 1000")
         total_amount = cursor.fetchone()[0]
         answer = "The total transaction amount is $" + str(round(total_amount, 2)) + "."
     elif question and "average" in question_lower and "amount" in question_lower:
-        cursor.execute("SELECT AVG(Amount) FROM pcards")
+        cursor.execute("SELECT AVG(Amount) FROM pcards WHERE AgencyNumber = 1000")
         average_amount = cursor.fetchone()[0]
         answer = "The average transaction amount is $" + str(round(average_amount, 2)) + "."
     elif question and "largest" in question_lower and "transaction" in question_lower:
-        cursor.execute("SELECT MAX(Amount) FROM pcards")
+        cursor.execute("SELECT MAX(Amount) FROM pcards WHERE AgencyNumber = 1000")
         largest_amount = cursor.fetchone()[0]
         answer = "The largest transaction amount is $" + str(round(largest_amount, 2)) + "."
     elif question:
@@ -71,7 +72,7 @@ def dashboard():
     vendor = request.args.get("vendor", "").strip()
     connection = get_db_connection()
     cursor = connection.cursor()
-    query = "SELECT * FROM pcards WHERE 1=1"
+    query = "SELECT * FROM pcards WHERE AgencyNumber = 1000"
     parameters = []
     if year:
         query += " AND Year = ?"
