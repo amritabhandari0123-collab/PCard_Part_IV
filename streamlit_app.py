@@ -79,7 +79,7 @@ Auditor question: {question}
 """
     client = genai.Client(api_key=key)
     response = client.models.generate_content(
-        model=os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
+        model=os.getenv("GEMINI_MODEL", "gemini-3-flash-preview"),
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
