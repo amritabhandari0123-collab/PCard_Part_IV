@@ -83,7 +83,7 @@ Auditor question: {question}
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
-            max_output_tokens=600,
+            max_output_tokens=2048,
         ),
     )
     data = json.loads(response.text)
